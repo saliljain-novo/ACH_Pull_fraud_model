@@ -22,3 +22,8 @@ Two models are built for ACH Pull based on tenure of business with Novo.
        random_state = 42,
        use_best_model=True
                        
+3. Notebook Instance for deployement: https://us-east-1.console.aws.amazon.com/sagemaker/home?region=us-east-1#/notebook-instances/Ach-fraud-model-test
+4. Notebook Greater than 6 months model : ach_pull_fraud_greater_6_months.ipynb
+5. Notebook Less than 6 months model : ach_pull_fraud_less_6_months.ipynb
+   
+   
