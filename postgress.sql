@@ -519,7 +519,8 @@ e.ach_c_count_past10by30d, e.ach_c_avg_past10by30d, e.debit_txn_count_past10by30
 
 -- f.past30d_ach_count, f.past30d_avg_ach_amount, f.past30d_completed_ach, f.past30d_returned_ach, f.past30d_rejected_ach,
 -- f.returned_past30d_ach_count, f.returned_past30d_avg_ach_amount, f.rejected_past30d_avg_ach_amount, f.completed_past30d_ach_count,
--- f.completed_past30d_avg_ach_amount, f.completed_past30d_std_ach_amount, f.completed_past30d_vs_current_amount_score
+-- f.completed_past30d_avg_ach_amount, f.completed_past30d_std_ach_amount, 
+f.completed_past30d_vs_current_amount_score,
 
 COALESCE(f.past30d_ach_count,0) as past30d_ach_count,
 COALESCE(f.past30d_avg_ach_amount,0) as past30d_avg_ach_amount,
