@@ -4,11 +4,8 @@ select a.id, a.business_id, a.created_at, b.bank_name, a.amount
 from "public"."pull_funds_requests" a
 inner join "public"."external_accounts" b on a.EXTERNAL_ACCOUNT_ID = b.ID
 -- order by created_at desc
-where a.id ='7c76b1b8-4362-424e-9df3-9cc99c6447f8'
-and a.BUSINESS_ID = '436a9dff-76df-4dc5-aaa2-59522638faae'
-
--- where a.id ='56a0560e-c8fa-44ed-9021-ca6ea838b1f0'
--- and a.BUSINESS_ID = '84877769-7514-421c-b06b-125d076250df'
+where a.id ='03ae2273-b02f-42fc-9d9e-3be3fedf23fb'
+and a.BUSINESS_ID = 'b3a25437-54a1-43b5-ad74-6563cb6246dc'
 )
 
 ----------- Bank Risk ------------
@@ -274,7 +271,7 @@ and a.status='active'
 )
 
 ,pfr_past30d_aggregate_temp as (
-select pfr_transaction_id, pfr_id, business_id, pfr_status,
+select pfr_id, business_id, pfr_status,
 sum(is_card_txn) as card_txn_count_past30d,
 sum(is_credit) as credit_txn_count_past30d,
 median(case when is_ach_c=1 then abs(amount) else null end) as ach_c_median_past30d,
@@ -287,7 +284,7 @@ avg(is_card_txn*abs(amount)) as card_txn_avg_past30d,
 sum(is_debit) as debit_txn_count_past30d,
 stddev(case when is_ach_c=1 then abs(amount) else null end) as ach_c_std_past30d
 from pfr_past_txn_past30d
-group by pfr_transaction_id, pfr_id, business_id, pfr_status
+group by pfr_id, business_id, pfr_status
 )
 
 ,pfr_past30d_aggregate as (
@@ -320,10 +317,10 @@ and a.status='active'
 )
 
 ,pfr_past2d_aggregate as (
-select pfr_transaction_id, pfr_id, business_id, pfr_status,
+select pfr_id, business_id, pfr_status,
 median(case when is_card_txn=1 then abs(amount) else null end) as card_txn_median_past2d
 from pfr_past_txn_past2d
-group by pfr_transaction_id, pfr_id, business_id, pfr_status
+group by pfr_id, business_id, pfr_status
 )
 
 
@@ -386,7 +383,7 @@ and a.status='active'
 )
 
 ,pfr_past10d_aggregate_temp as ( 
-select pfr_transaction_id, pfr_id, business_id, pfr_status,
+select pfr_id, business_id, pfr_status,
 sum(is_credit) as credit_txn_count_past10d, 
 median(case when is_card_txn=1 then abs(amount) else null end) as card_txn_median_past10d, 
 sum(is_debit) as debit_txn_count_past10d, 
@@ -395,7 +392,7 @@ sum(is_ach_c) as ach_c_count_past10d,
 avg(is_ach_c*abs(amount)) as ach_c_avg_past10d, 
 median(case when is_ach_c=1 then abs(amount) else null end) as ach_c_median_past10d
 from pfr_past_txn_past10d
-group by pfr_transaction_id, pfr_id, business_id, pfr_status
+group by pfr_id, business_id, pfr_status
 )
 
 ,pfr_past10d_aggregate as (
@@ -410,8 +407,8 @@ ach_c_count_past10d/NULLIF(COALESCE(CAST(ach_c_count_past30d as float),0),0) as 
 ach_c_avg_past10d/NULLIF(COALESCE(CAST(ach_c_avg_past30d as float),0),0) as ach_c_avg_past10by30d,
 debit_txn_count_past10d/NULLIF(COALESCE(CAST(debit_txn_count_past30d as float),0),0) as debit_txn_count_past10by30d,
 ach_c_median_past10d/NULLIF(COALESCE(CAST(ach_c_median_past30d as float),0),0) as ach_c_median_past10by30d
-from pfr_past30d_aggregate a left outer join pfr_past2d_aggregate b on a.pfr_transaction_id = b.pfr_transaction_id and a.pfr_id = b.pfr_id and a.business_id= b.business_id
-left outer join pfr_past10d_aggregate c on a.pfr_transaction_id = c.pfr_transaction_id and a.pfr_id = c.pfr_id and a.business_id= c.business_id
+from pfr_past30d_aggregate a left outer join pfr_past2d_aggregate b on a.pfr_id = b.pfr_id and a.business_id= b.business_id
+left outer join pfr_past10d_aggregate c on a.pfr_id = c.pfr_id and a.business_id= c.business_id
 )
 
 ,transaction_query as ( select transaction_query_temp.* from transaction_query_temp inner join ach on transaction_query_temp.pfr_id = ach.id )
