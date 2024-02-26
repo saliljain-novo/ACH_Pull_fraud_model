@@ -274,10 +274,14 @@ and a.status='active'
 select pfr_id, business_id, pfr_status,
 sum(is_card_txn) as card_txn_count_past30d,
 sum(is_credit) as credit_txn_count_past30d,
-median(case when is_ach_c=1 then abs(amount) else null end) as ach_c_median_past30d,
-median(case when is_ach_d=1 then abs(amount) else null end) as ach_d_median_past30d,
+
+percentile_cont(0.50) within group (order by (case when is_ach_c=1 then abs(amount) else null end) desc) as ach_c_median_past30d,
+-- median(case when is_ach_c=1 then abs(amount) else null end) as ach_c_median_past30d,
+percentile_cont(0.50) within group (order by (case when is_ach_d=1 then abs(amount) else null end) desc) as ach_d_median_past30d,
+-- median(case when is_ach_d=1 then abs(amount) else null end) as ach_d_median_past30d,
 avg(is_ach_c*abs(amount)) as ach_c_avg_past30d,
-median(case when is_card_txn=1 then abs(amount) else null end) as card_txn_median_past30d,
+percentile_cont(0.50) within group (order by (case when is_card_txn=1 then abs(amount) else null end) desc) as card_txn_median_past30d,
+-- median(case when is_card_txn=1 then abs(amount) else null end) as card_txn_median_past30d,
 sum(is_ach_c) as ach_c_count_past30d,
 avg(is_ach_d*abs(amount)) as ach_d_avg_past30d,
 avg(is_card_txn*abs(amount)) as card_txn_avg_past30d,
@@ -318,7 +322,8 @@ and a.status='active'
 
 ,pfr_past2d_aggregate as (
 select pfr_id, business_id, pfr_status,
-median(case when is_card_txn=1 then abs(amount) else null end) as card_txn_median_past2d
+percentile_cont(0.50) within group (order by (case when is_card_txn=1 then abs(amount) else null end) desc) as card_txn_median_past2d
+-- median(case when is_card_txn=1 then abs(amount) else null end) as card_txn_median_past2d
 from pfr_past_txn_past2d
 group by pfr_id, business_id, pfr_status
 )
@@ -384,13 +389,15 @@ and a.status='active'
 
 ,pfr_past10d_aggregate_temp as ( 
 select pfr_id, business_id, pfr_status,
-sum(is_credit) as credit_txn_count_past10d, 
-median(case when is_card_txn=1 then abs(amount) else null end) as card_txn_median_past10d, 
+sum(is_credit) as credit_txn_count_past10d,
+percentile_cont(0.50) within group (order by (case when is_card_txn=1 then abs(amount) else null end) desc) as card_txn_median_past10d,
+-- median(case when is_card_txn=1 then abs(amount) else null end) as card_txn_median_past10d, 
 sum(is_debit) as debit_txn_count_past10d, 
 avg(is_card_txn*abs(amount)) as card_txn_avg_past10d, 
 sum(is_ach_c) as ach_c_count_past10d, 
 avg(is_ach_c*abs(amount)) as ach_c_avg_past10d, 
-median(case when is_ach_c=1 then abs(amount) else null end) as ach_c_median_past10d
+percentile_cont(0.50) within group (order by (case when is_ach_c=1 then abs(amount) else null end) desc) as ach_c_median_past10d
+-- median(case when is_ach_c=1 then abs(amount) else null end) as ach_c_median_past10d
 from pfr_past_txn_past10d
 group by pfr_id, business_id, pfr_status
 )
@@ -511,6 +518,9 @@ COALESCE(b.bank_risk,0) as bank_risk, c.ein_ssn,
 
 d.RB_AT_DEPOSIT, d.OD_COUNT_PAST30D, d.ZERO_BALANCE_COUNT_PAST30D, d.AVG_RUNNING_BALANCE_PAST30D, d.STDDEV_RUNNING_BALANCE_PAST30D,
 
+e.card_txn_count_past30d, e.debit_by_credit_past_30d, e.ach_c_median_past30d, e.ach_c_avg_past30d, e.ach_d_median_past30d, 
+e.card_txn_median_past30d, e.ach_c_count_past30d, e.ach_d_avg_past30d, e.card_txn_avg_past30d, ach_c_std_past30d,
+
 e.card_txn_median_past2d, e.card_txn_avg_past10d, e.debit_by_credit_past_10d, e.card_txn_median_past10by30d,
 e.ach_c_count_past10by30d, e.ach_c_avg_past10by30d, e.debit_txn_count_past10by30d, e.ach_c_median_past10by30d,
 
@@ -521,15 +531,15 @@ f.completed_past30d_vs_current_amount_score,
 
 COALESCE(f.past30d_ach_count,0) as past30d_ach_count,
 COALESCE(f.past30d_avg_ach_amount,0) as past30d_avg_ach_amount,
-COALESCE(f.past30d_completed_ach,0) as past30d_completed_ach,
+-- COALESCE(f.past30d_completed_ach,0) as past30d_completed_ach,
 COALESCE(f.past30d_returned_ach,0) as past30d_returned_ach,
-COALESCE(f.past30d_rejected_ach,0) as past30d_rejected_ach,
+-- COALESCE(f.past30d_rejected_ach,0) as past30d_rejected_ach,
 
-COALESCE(f.returned_past30d_ach_count,0) as  returned_past30d_ach_count,
+-- COALESCE(f.returned_past30d_ach_count,0) as  returned_past30d_ach_count,
 COALESCE(f.returned_past30d_avg_ach_amount,0) as  returned_past30d_avg_ach_amount,
 COALESCE(f.rejected_past30d_avg_ach_amount,0) as  rejected_past30d_avg_ach_amount,
-COALESCE(f.completed_past30d_ach_count,0) as completed_past30d_ach_count,
-COALESCE(f.completed_past30d_avg_ach_amount,0) as completed_past30d_avg_ach_amount,
+-- COALESCE(f.completed_past30d_ach_count,0) as completed_past30d_ach_count,
+-- COALESCE(f.completed_past30d_avg_ach_amount,0) as completed_past30d_avg_ach_amount,
 COALESCE(f.completed_past30d_std_ach_amount,0) as completed_past30d_std_ach_amount
 
 from ach a left outer join bank_risk b on a.bank_name = b.bank_name
