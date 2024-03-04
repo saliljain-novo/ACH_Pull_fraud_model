@@ -34,3 +34,6 @@ Two models are built for ACH Pull based on tenure of business with Novo.
 7. Endpoint Greater than 6 months: INFO:sagemaker:Creating model with name: sagemaker-jumpstart-2024-03-04-04-24-01-233
                                    INFO:sagemaker:Creating endpoint-config with name less-6-months-catboost-classification-m-2024-03-04-04-24-01-233
                                    INFO:sagemaker:Creating endpoint with name less-6-months-catboost-classification-m-2024-03-04-04-24-01-233   
+
+8. ACH Pull Model Results : https://docs.google.com/spreadsheets/d/15cIM-xeszrWSPnwo_UkvdM6U7_LYK-sf4A784CRMiM8/edit#gid=311510193
+                            https://docs.google.com/spreadsheets/d/1mcZ5lRzOZ2RbrC8nZbCggeqZRZD6vIpSV_wVsGvyZ4Q/edit#gid=772396204
