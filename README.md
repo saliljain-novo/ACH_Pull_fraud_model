@@ -4,8 +4,8 @@ Two models are built for ACH Pull based on tenure of business with Novo.
      **Hyper Parameters**
        categoricals = ['bank_risk']
        eval_metric = 'AUC',
-       depth = 5,
-       iterations = 700,
+       depth = 6,
+       iterations = 400,
        l2_leaf_reg = 70,
        learning_rate = 0.11,
        random_state = 42,
@@ -24,6 +24,13 @@ Two models are built for ACH Pull based on tenure of business with Novo.
                        
 3. Notebook Instance for deployement: https://us-east-1.console.aws.amazon.com/sagemaker/home?region=us-east-1#/notebook-instances/Ach-fraud-model-test
 4. AWS Greater than 6 months model (Deployment Notebook) : ach_pull_fraud_greater_6_months.ipynb
+
 5. AWS Less than 6 months model (Deployment Notebook) : ach_pull_fraud_less_6_months.ipynb
+
+6. Endpoint Greater than 6 months: INFO:sagemaker:Creating model with name: sagemaker-jumpstart-2024-03-04-04-36-18-946
+                                   INFO:sagemaker:Creating endpoint-config with name greater-6-months-catboost-classificatio-2024-03-04-04-36-18-946
+                                   INFO:sagemaker:Creating endpoint with name greater-6-months-catboost-classificatio-2024-03-04-04-36-18-946
    
-   
+7. Endpoint Greater than 6 months: INFO:sagemaker:Creating model with name: sagemaker-jumpstart-2024-03-04-04-24-01-233
+                                   INFO:sagemaker:Creating endpoint-config with name less-6-months-catboost-classification-m-2024-03-04-04-24-01-233
+                                   INFO:sagemaker:Creating endpoint with name less-6-months-catboost-classification-m-2024-03-04-04-24-01-233   
