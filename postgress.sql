@@ -537,7 +537,7 @@ COALESCE(f.past30d_returned_ach,0) as past30d_returned_ach,
 
 -- COALESCE(f.returned_past30d_ach_count,0) as  returned_past30d_ach_count,
 COALESCE(f.returned_past30d_avg_ach_amount,0) as  returned_past30d_avg_ach_amount,
-COALESCE(f.rejected_past30d_avg_ach_amount,0) as  rejected_past30d_avg_ach_amount,
+COALESCE(f.rejected_past30d_avg_ach_amount,0) as  rejected_past30d_avg_ach_amount
 -- COALESCE(f.completed_past30d_ach_count,0) as completed_past30d_ach_count,
 -- COALESCE(f.completed_past30d_avg_ach_amount,0) as completed_past30d_avg_ach_amount,
 -- COALESCE(f.completed_past30d_std_ach_amount,0) as completed_past30d_std_ach_amount
