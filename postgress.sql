@@ -1,11 +1,12 @@
 
+
 WITH ach as (
 select a.id, a.business_id, a.created_at, b.bank_name, a.amount
 from "public"."pull_funds_requests" a
 inner join "public"."external_accounts" b on a.EXTERNAL_ACCOUNT_ID = b.ID
 -- order by created_at desc
-where a.id ='03ae2273-b02f-42fc-9d9e-3be3fedf23fb'
-and a.BUSINESS_ID = 'b3a25437-54a1-43b5-ad74-6563cb6246dc'
+where a.id ='2f8b00d5-f0a4-489a-8562-d30f5ddc6a54'
+and a.BUSINESS_ID = '231941fc-8df3-495a-8bb5-6195c4109a52'
 )
 
 ----------- Bank Risk ------------
@@ -408,7 +409,8 @@ from pfr_past10d_aggregate_temp
 )
 
 ,transaction_query_temp as (
-select a.*, b.card_txn_median_past2d, c.card_txn_avg_past10d, c.debit_by_credit_past_10d,
+select a.*, b.card_txn_median_past2d, c.card_txn_avg_past10d, 
+COALESCE(c.debit_by_credit_past_10d,0) as debit_by_credit_past_10d,
 card_txn_median_past10d/NULLIF(COALESCE(CAST(card_txn_median_past30d as float),0),0) as card_txn_median_past10by30d,
 ach_c_count_past10d/NULLIF(COALESCE(CAST(ach_c_count_past30d as float),0),0) as ach_c_count_past10by30d,
 ach_c_avg_past10d/NULLIF(COALESCE(CAST(ach_c_avg_past30d as float),0),0) as ach_c_avg_past10by30d,
@@ -518,8 +520,12 @@ COALESCE(b.bank_risk,0) as bank_risk, c.ein_ssn,
 
 d.RB_AT_DEPOSIT, d.OD_COUNT_PAST30D, d.ZERO_BALANCE_COUNT_PAST30D, d.AVG_RUNNING_BALANCE_PAST30D, d.STDDEV_RUNNING_BALANCE_PAST30D,
 
-e.card_txn_count_past30d, e.debit_by_credit_past_30d, e.ach_c_median_past30d, e.ach_c_avg_past30d, e.ach_d_median_past30d, 
-e.card_txn_median_past30d, e.ach_c_count_past30d, e.ach_d_avg_past30d, e.card_txn_avg_past30d, ach_c_std_past30d,
+COALESCE(e.card_txn_count_past30d,0) as card_txn_count_past30d, 
+COALESCE(e.debit_by_credit_past_30d,0) as debit_by_credit_past_30d, 
+e.ach_c_median_past30d, e.ach_c_avg_past30d, e.ach_d_median_past30d, 
+e.card_txn_median_past30d, 
+COALESCE(e.ach_c_count_past30d,0) as ach_c_count_past30d, 
+e.ach_d_avg_past30d, e.card_txn_avg_past30d, ach_c_std_past30d,
 
 e.card_txn_median_past2d, e.card_txn_avg_past10d, e.debit_by_credit_past_10d, e.card_txn_median_past10by30d,
 e.ach_c_count_past10by30d, e.ach_c_avg_past10by30d, e.debit_txn_count_past10by30d, e.ach_c_median_past10by30d,
