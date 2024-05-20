@@ -1,6 +1,5 @@
 import json
 from name_matching_script import name_matching
-import pandas as pd
 from ast import literal_eval
 
 
