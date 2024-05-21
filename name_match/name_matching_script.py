@@ -50,12 +50,12 @@ class name_matching:
 
     def get_result(self):
 
-        if self.external_account_name is None:
+        if self.external_account_name == "Empty":
             return_text = 'External_Account_Name_Null'
         
         k=0
 
-        if self.external_account_name != None:
+        if self.external_account_name != "Empty":
             external_account_names_1 = str(self.external_account_name).strip().upper().replace('\n', '').replace('  "','"')
             external_account_names_1 = literal_eval(external_account_names_1)
 
@@ -409,11 +409,13 @@ class name_matching:
                                         k=k+1
                                     
                 if k==0:
+                    exceptions = ['TECHNOLOGIES','SOLUTIONS','REVENUE','SOLUTION','TECHNOLOGY']   # Exceptions for Company Name
                     for a in company_name_split:
-                        for b in external_account_names_split:
-                            if len(a)>=5 and len(b)>=5:
-                                for match,index in self.fuzzy_extract(a.strip('-,.)(').upper(), b.strip('-,.)(').upper(), 100):
-                                    k=k+1
+                        if ((a.strip('-,.)(').upper() != 'TECHNOLOGIES') & (a.strip('-,.)(').upper() != 'SOLUTIONS') & (a.strip('-,.)(').upper() != 'SOLUTION') & (a.strip('-,.)(').upper() != 'TECHNOLOGY') & (a.strip('-,.)(').upper() != 'REVENUE')):
+                            for b in external_account_names_split:
+                                if len(a)>=5 and len(b)>=5:
+                                    for match,index in self.fuzzy_extract(a.strip('-,.)(').upper(), b.strip('-,.)(').upper(), 100):
+                                        k=k+1
                                     
                 if k==0:
                     if dba != 'Empty':

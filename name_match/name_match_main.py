@@ -20,14 +20,24 @@ def run_name_match(data_dict):
     external_account_name = data_dict['external_account_name']
 
     result = name_matching(user_name_full, user_name_mid, company_name, dba, external_account_name).get_result()
-    return result
+
+    if result =='External_Account_Name_Null':
+        decision='0'
+
+    if result =='Name_Matched':
+        decision='0'
+    
+    if result =='Name_Mismatch':
+        decision='-1'
+
+    return result, decision
 
 
 
 def lambda_handler(event, context):
     data = json.loads(event['body'])
 
-    needed_keys = ['user_name_full', 'user_name_mid', 'company_name', 'dba', 'external_account_name','pfr_id']
+    needed_keys = ['user_name_full', 'user_name_mid', 'company_name', 'dba', 'external_account_name','pfr_id','amount']
 
     for key in needed_keys:
         if key not in data.keys():
@@ -41,7 +51,7 @@ def lambda_handler(event, context):
             }
 
     try:
-        name_status = run_name_match(data)
+        name_status, decision_status = run_name_match(data)
     except Exception as e:
         return {
             'statusCode': 500,
@@ -53,7 +63,7 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps({'pfr_id': data['pfr_id'], 'name_match_status': name_status})
+        'body': json.dumps({'pfr_id': data['pfr_id'], 'name_match_status': name_status, 'decision_status': decision_status})
     }
 
 
@@ -64,6 +74,7 @@ if __name__ == '__main__':
     event_dict['company_name'] = 'ZNA MUSIC LLC'
     event_dict['dba'] = 'Empty'
     event_dict['external_account_name'] = ["Marcus Herzog"]
+    event_dict['amount'] = '200'
 
     event = {
         'body': json.dumps(event_dict)
