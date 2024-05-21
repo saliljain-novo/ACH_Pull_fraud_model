@@ -55,17 +55,37 @@ class name_matching:
         
         k=0
 
+        # Handling Missing values for User Name and Company Name
+        if self.user_name_full == 'Empty':
+            user_name_full = ['Empty']
+        if self.user_name_full != 'Empty':
+            user_name_full = str(self.user_name_full).replace('-',' ') 
+            user_name_full = literal_eval(user_name_full)
+
+        if self.user_name_mid == 'Empty':
+            user_name_mid = ['Empty']
+        if self.user_name_mid != 'Empty':
+            user_name_mid = str(self.user_name_mid).replace('-',' ') 
+            user_name_mid = literal_eval(user_name_mid)
+
+        if self.company_name == 'Empty':
+            company_name = ['Empty']
+        if self.company_name != 'Empty':
+            company_name=self.company_name.upper()
+            company_name_split = company_name.strip().split(' ')
+
+
         if self.external_account_name != "Empty":
             external_account_names_1 = str(self.external_account_name).strip().upper().replace('\n', '').replace('  "','"')
             external_account_names_1 = literal_eval(external_account_names_1)
 
-            company_name=self.company_name.upper()
-            company_name_split = company_name.strip().split(' ')
+            # company_name=self.company_name.upper()
+            # company_name_split = company_name.strip().split(' ')
 
-            user_name_full = str(self.user_name_full).replace('-',' ') 
-            user_name_full = literal_eval(user_name_full)
-            user_name_mid = str(self.user_name_mid).replace('-',' ')
-            user_name_mid = literal_eval(user_name_mid)
+            # user_name_full = str(self.user_name_full).replace('-',' ') 
+            # user_name_full = literal_eval(user_name_full)
+            # user_name_mid = str(self.user_name_mid).replace('-',' ')
+            # user_name_mid = literal_eval(user_name_mid)
 
             dba = self.dba
 
@@ -399,14 +419,16 @@ class name_matching:
                                 for match,index in self.fuzzy_extract_lib1(dba.strip('-,.)(').upper(), i2.strip('-,.)(').upper(), 50):
                                     k=k+1
 
-                if k==0:
+                if k==0: 
+                    exceptions = ['MOHAMMAD']   # Exceptions for User Name
                     for user_name_1 in user_name_full:
                         user_name_split = user_name_1.replace('-',' ').split(' ')
                         for a in user_name_split:
-                            for b in external_account_names_split:
-                                if len(a)>=3 and len(b)>=3:
-                                    for match,index in self.fuzzy_extract(a.strip('-,.)(').upper(), b.strip('-,.)(').upper(), 100):
-                                        k=k+1
+                            if (a.strip('-,.)(').upper() != 'MOHAMMAD'):
+                                for b in external_account_names_split:
+                                    if len(a)>=3 and len(b)>=3:
+                                        for match,index in self.fuzzy_extract(a.strip('-,.)(').upper(), b.strip('-,.)(').upper(), 100):
+                                            k=k+1
                                     
                 if k==0:
                     exceptions = ['TECHNOLOGIES','SOLUTIONS','REVENUE','SOLUTION','TECHNOLOGY']   # Exceptions for Company Name
