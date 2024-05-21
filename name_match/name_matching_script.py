@@ -68,19 +68,19 @@ class name_matching:
             user_name_mid = str(self.user_name_mid).replace('-',' ') 
             user_name_mid = literal_eval(user_name_mid)
 
-        if self.company_name == 'Empty':
-            company_name = ['Empty']
-        if self.company_name != 'Empty':
-            company_name=self.company_name.upper()
-            company_name_split = company_name.strip().split(' ')
+        # if self.company_name == 'Empty':
+        #     company_name = 'Empty'
+        # if self.company_name != 'Empty':
+        #     company_name=self.company_name.upper()
+        #     company_name_split = company_name.strip().split(' ')
 
 
         if self.external_account_name != "Empty":
             external_account_names_1 = str(self.external_account_name).strip().upper().replace('\n', '').replace('  "','"')
             external_account_names_1 = literal_eval(external_account_names_1)
 
-            # company_name=self.company_name.upper()
-            # company_name_split = company_name.strip().split(' ')
+            company_name=self.company_name.upper()
+            company_name_split = company_name.strip().split(' ')
 
             # user_name_full = str(self.user_name_full).replace('-',' ') 
             # user_name_full = literal_eval(user_name_full)
