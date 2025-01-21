@@ -18,11 +18,42 @@ def run_name_match(data_dict):
     company_name = data_dict['company_name']
     dba = data_dict['dba']
     external_account_name = data_dict['external_account_name']
+    amount = data_dict['amount']
+    rb_at_deposit = data_dict['rb_at_deposit']
+    tenure = data_dict['accountAge']
+
+    if rb_at_deposit=="":
+        rb_at_deposit=0
+
+    rb_at_deposit = float(rb_at_deposit)
+    tenure = float(tenure)
+    amount = float(amount)
+
+    ratio = rb_at_deposit/amount
+
+    if user_name_full== []:
+        user_name_full='Empty'
+    
+    if user_name_mid== []:
+        user_name_mid='Empty'
+
+    if company_name== "":
+        company_name="Empty"
+
+    if dba== "":
+        dba="Empty"
+
+    if external_account_name == []:
+        external_account_name='Empty'
+
 
     result = name_matching(user_name_full, user_name_mid, company_name, dba, external_account_name).get_result()
 
     if result =='External_Account_Name_Null':
         decision='0'
+
+    # if (result =='External_Account_Name_Null') & (ratio<0.5) & (amount>500) & (tenure<6):
+    #     decision='-1'
 
     if result =='Name_Matched':
         decision='0'
@@ -37,7 +68,8 @@ def run_name_match(data_dict):
 def lambda_handler(event, context):
     data = json.loads(event['body'])
 
-    needed_keys = ['user_name_full', 'user_name_mid', 'company_name', 'dba', 'external_account_name','pfr_id','amount']
+    needed_keys = ['user_name_full', 'user_name_mid', 'company_name', 'dba', 
+                   'external_account_name','pfr_id','amount','rb_at_deposit','accountAge']
 
     for key in needed_keys:
         if key not in data.keys():
@@ -69,12 +101,14 @@ def lambda_handler(event, context):
 
 if __name__ == '__main__':
     event_dict = {"pfr_id": "ec1a475b-ede9-4d5b-8f23-834916d7c6aa"}
-    event_dict['user_name_full'] = ['Marcus A Herzog', 'Zena Penning']
-    event_dict['user_name_mid'] = ['Marcus Herzog', 'Zena Penning']
-    event_dict['company_name'] = 'ZNA MUSIC LLC'
+    event_dict['user_name_full'] = ['Torie De-Laine']
+    event_dict['user_name_mid'] = ['Torie De-Laine']
+    event_dict['company_name'] = 'A.A.A.T.C LLC'
     event_dict['dba'] = 'Empty'
-    event_dict['external_account_name'] = ["Marcus Herzog"]
+    event_dict['external_account_name'] = ["CHINENE DELAINE"]
     event_dict['amount'] = '200'
+    event_dict['rb_at_deposit'] = '200'
+    event_dict['accountAge'] = '1.4'
 
     event = {
         'body': json.dumps(event_dict)

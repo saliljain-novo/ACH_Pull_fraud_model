@@ -76,7 +76,7 @@ class name_matching:
 
 
         if self.external_account_name != "Empty":
-            external_account_names_1 = str(self.external_account_name).strip().upper().replace('\n', '').replace('  "','"')
+            external_account_names_1 = str(self.external_account_name).strip().upper().replace('\n', '').replace('  "','"').replace(',',' ')
             external_account_names_1 = literal_eval(external_account_names_1)
 
             company_name=self.company_name.upper()
@@ -426,7 +426,7 @@ class name_matching:
                         for a in user_name_split:
                             if (a.strip('-,.)(').upper() != 'MOHAMMAD'):
                                 for b in external_account_names_split:
-                                    if len(a)>=3 and len(b)>=3:
+                                    if len(a)>=2 and len(b)>=2:
                                         for match,index in self.fuzzy_extract(a.strip('-,.)(').upper(), b.strip('-,.)(').upper(), 100):
                                             k=k+1
                                     
