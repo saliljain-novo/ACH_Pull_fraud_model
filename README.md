@@ -38,3 +38,38 @@ Two models are built for ACH Pull based on tenure of business with Novo.
 8. ACH Pull Model Results : https://docs.google.com/spreadsheets/d/15cIM-xeszrWSPnwo_UkvdM6U7_LYK-sf4A784CRMiM8/edit#gid=311510193
                             https://docs.google.com/spreadsheets/d/1mcZ5lRzOZ2RbrC8nZbCggeqZRZD6vIpSV_wVsGvyZ4Q/edit#gid=665619735
                             
+
+############################ REFRESH MODEL ############################
+1. Less than 6 months (Train on less than 6 months | Test on less than 6 months of tenure)
+     **Hyper Parameters**
+       categoricals = ['bank_risk']
+       eval_metric = 'AUC',
+       depth = 5,
+       iterations = 700,
+       l2_leaf_reg = 70,
+       learning_rate = 0.11,
+       random_state = 42,
+       use_best_model=True
+
+2. Greater than 6 months (Train on greater than 6 months | Test on greater than 6 months)
+    **Hyper Parameters**
+       categoricals = ['bank_risk']
+       eval_metric = 'AUC',
+       depth = 5,
+       iterations = 400,
+       l2_leaf_reg = 100,
+       learning_rate = 0.11,
+       random_state = 42,
+       use_best_model=True
+
+3. Notebook Instance for deployement: https://ach-pull-fraud-model-refresh.notebook.us-east-1.sagemaker.aws/tree
+
+4. AWS Greater than 6 months model (Deployment Notebook) : greater_6_months.ipynb
+
+5. AWS Less than 6 months model (Deployment Notebook) : less_6_months.ipynb
+
+6. Endpoint Greater than 6 months: greater-6-months-refresh-2025-05-06-09-39-51-151
+   
+7. Endpoint Less than 6 months: less-6-months-refresh-2025-05-06-07-58-00-226
+
+8. ACH Pull Model Results : https://docs.google.com/spreadsheets/d/1zUGgrimGsOXF9xxWADuqTz8UOZux2My_GA66xOTOfKQ/edit?gid=1792913008#gid=1792913008
