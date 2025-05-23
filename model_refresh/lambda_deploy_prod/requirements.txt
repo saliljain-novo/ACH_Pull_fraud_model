@@ -1,0 +1,8 @@
+fuzzysearch
+fuzzywuzzy
+asttokens
+python-Levenshtein
+python-decouple
+catboost~=1.2.2
+snowflake-connector-python
+pandas
