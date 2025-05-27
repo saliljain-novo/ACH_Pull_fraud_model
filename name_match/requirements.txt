@@ -1,5 +1,5 @@
-fuzzysearch==0.7.3
-fuzzywuzzy==0.18.0
-asttokens==2.0.5
-python-Levenshtein==0.21.1
+fuzzysearch
+fuzzywuzzy
+asttokens
+python-Levenshtein
 python-decouple

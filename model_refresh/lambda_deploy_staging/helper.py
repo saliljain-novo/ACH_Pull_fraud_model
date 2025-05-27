@@ -41,11 +41,11 @@ def get_model_variables(business_id, amount, external_bank_name):
         select a.*, COALESCE(b.bank_risk,0) as bank_risk 
         from data1 a left join data2 b ON TRUE limit 1
     """
-    print('test2')
+
     data = get_data(conn, query, params=(business_id, external_bank_name))
-    data['amount'] = amount
-    print('test3')
+    data['amount'] = float(amount)
     data.columns = data.columns.str.lower()
+
     data = data.drop(columns=['run_time'])
     months_on_books = data["mob"][0]
 
@@ -68,7 +68,6 @@ def get_model_variables(business_id, amount, external_bank_name):
                      'ach_d_avg_past30d','past30d_avg_ach_amount','ach_c_count_past10by30d',
                      'zero_balance_count_past30d']] 
 
-    print(data)
     return data, model_variables, months_on_books
 
 # Score Model
@@ -85,7 +84,6 @@ def score_model(model_variables, months_on_books):
         model.load_model(model_file_name)
         model_name = 'greater_6_months'
     
-    print('test5')
     return model.predict_proba(model_variables)[0][1], model_name # round(model.predict_proba(model_variables)[0][1],3)
 
 
