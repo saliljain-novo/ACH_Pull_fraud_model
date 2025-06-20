@@ -73,7 +73,7 @@ def lambda_handler(event, context):
     return {
         'statusCode': 200,
         'body': json.dumps({'pfr_id': data['pfr_id'], 
-                            'ds_mode_score': score, 
+                            'ds_model_score': score, 
                             'model_used' : model_name,
                             'variables': raw_variables,
                             'name_match_result': name_status, 
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     # event_dict['user_name_mid'] = ""
     event_dict['company_name'] = ''
     event_dict['dba'] = ''
-    event_dict['external_account_name'] = ["John"]
+    event_dict['external_account_name'] = ["John Bar", "Jane Doe"]
 
     event = {
         'body': json.dumps(event_dict)

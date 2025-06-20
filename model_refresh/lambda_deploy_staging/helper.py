@@ -28,7 +28,7 @@ def get_model_variables(business_id, amount, external_bank_name):
     query = """
         with data1 as (
         SELECT a.*
-        FROM "PROD_DB"."DATA"."ACH_DS_ENGINE_PROD" a
+        FROM "PROD_DB"."ADHOC"."ACH_DS_ENGINE_STAGING" a
         WHERE a.business_id = %s
         QUALIFY ROW_NUMBER() OVER (PARTITION BY a.business_id ORDER BY a.run_time DESC) = 1
         )
@@ -46,7 +46,7 @@ def get_model_variables(business_id, amount, external_bank_name):
     data['amount'] = float(amount)
     data.columns = data.columns.str.lower()
 
-    data = data.drop(columns=['run_time'])
+    data['run_time'] = data['run_time'].astype(str)
     months_on_books = data["mob"][0]
 
     if months_on_books < 6:

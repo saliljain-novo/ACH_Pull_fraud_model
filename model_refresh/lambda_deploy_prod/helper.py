@@ -46,7 +46,7 @@ def get_model_variables(business_id, amount, external_bank_name):
     data['amount'] = float(amount)
     data.columns = data.columns.str.lower()
 
-    data = data.drop(columns=['run_time'])
+    data['run_time'] = data['run_time'].astype(str)
     months_on_books = data["mob"][0]
 
     if months_on_books < 6:

@@ -73,7 +73,7 @@ def lambda_handler(event, context):
     return {
         'statusCode': 200,
         'body': json.dumps({'pfr_id': data['pfr_id'], 
-                            'ds_mode_score': score, 
+                            'ds_model_score': score, 
                             'model_used' : model_name,
                             'variables': raw_variables,
                             'name_match_result': name_status, 
@@ -83,26 +83,15 @@ def lambda_handler(event, context):
 
 
 if __name__ == '__main__':
-    event_dict = {"pfr_id": "ec1a475b-ede9-4d5b-8f23-834916d7c6aa"}
-    event_dict["business_id"] = 'f3c14100-8453-4381-a411-999796c96b99'
-    event_dict['amount'] = '470'
-    event_dict['external_bank_name'] = 'test'
-    event_dict['users'] = [
-                            {
-                                "first_name": "John",
-                                "middle_name": "Bar",
-                                "last_name": "Doe",
-                                },
-                                {
-                                "first_name": "Jane",
-                                "middle_name": "Bar",
-                                "last_name": "Doe",
-                            }
-                          ]
+    event_dict = {"pfr_id": "d4286601-8fc1-477c-ba91-df087fd3220f"}
+    event_dict["business_id"] = '37b09bb8-8777-47b8-91c9-05695cb7f9d2'
+    event_dict['amount'] = '0.1'
+    event_dict['external_bank_name'] = 'Chase'
+    event_dict['users'] = [{"first_name":"Ramiro","middle_name":"","last_name":"Mendez"}]
     # event_dict['user_name_mid'] = ""
-    event_dict['company_name'] = ''
+    event_dict['company_name'] = 'Around the Block Entertainment'
     event_dict['dba'] = ''
-    event_dict['external_account_name'] = ["John"]
+    event_dict['external_account_name'] = ["Ramiro Mendez"]
 
     event = {
         'body': json.dumps(event_dict)

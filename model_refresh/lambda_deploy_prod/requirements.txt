@@ -1,4 +1,4 @@
-fuzzysearch
+fuzzysearch==0.7.3
 fuzzywuzzy
 asttokens
 python-Levenshtein
