@@ -84,9 +84,9 @@ def lambda_handler(event, context):
 
 if __name__ == '__main__':
     event_dict = {"pfr_id": "d4286601-8fc1-477c-ba91-df087fd3220f"}
-    event_dict["business_id"] = '37b09bb8-8777-47b8-91c9-05695cb7f9d2'
-    event_dict['amount'] = '0.1'
-    event_dict['external_bank_name'] = 'Chase'
+    event_dict["business_id"] = 'bcedff8d-138e-42fa-b0c6-9cd550dcfb19'
+    event_dict['amount'] = '1200'
+    event_dict['external_bank_name'] = 'Chime'
     event_dict['users'] = [{"first_name":"Ramiro","middle_name":"","last_name":"Mendez"}]
     # event_dict['user_name_mid'] = ""
     event_dict['company_name'] = 'Around the Block Entertainment'

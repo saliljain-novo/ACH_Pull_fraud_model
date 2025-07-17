@@ -43,6 +43,30 @@ def get_model_variables(business_id, amount, external_bank_name):
     """
 
     data = get_data(conn, query, params=(business_id, external_bank_name))
+
+    if data.shape[0]==0:
+
+        query_null = """
+        with data1 as (
+        SELECT a.*
+        FROM "PROD_DB"."ADHOC"."ACH_DS_ENGINE_STAGING" a
+        WHERE a.business_id = %s
+        QUALIFY ROW_NUMBER() OVER (PARTITION BY a.business_id ORDER BY a.run_time DESC) = 1
+        UNION
+        select NULL, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+        )
+
+        ,data2 as(
+        select bank_risk from "PROD_DB"."DATA"."ACH_DS_ENGINE_BANK_RISK"
+        where trim(LOWER(bank_name))=TRIM(LOWER(%s))
+        )
+
+        select a.*, COALESCE(b.bank_risk,0) as bank_risk 
+        from data1 a left join data2 b ON TRUE limit 1
+        """
+
+        data = get_data(conn, query_null, params=(business_id, external_bank_name))
+
     data['amount'] = float(amount)
     data.columns = data.columns.str.lower()
 

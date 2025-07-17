@@ -86,7 +86,7 @@ if __name__ == '__main__':
     event_dict = {"pfr_id": "ec1a475b-ede9-4d5b-8f23-834916d7c6aa"}
     event_dict["business_id"] = 'f3c14100-8453-4381-a411-999796c96b99'
     event_dict['amount'] = '470'
-    event_dict['external_bank_name'] = 'test'
+    event_dict['external_bank_name'] = 'John'
     event_dict['users'] = [
                             {
                                 "first_name": "John",
