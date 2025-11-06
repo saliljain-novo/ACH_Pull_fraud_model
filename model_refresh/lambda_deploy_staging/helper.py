@@ -122,7 +122,7 @@ def clean_value(value):
 
 def process_result(result):
     decision_map = {
-        'External_Account_Name_Null': '0',
+        'External_Account_Name_Null': '-2',
         'Name_Matched': '0',
         'Name_Mismatch': '-1'
     }
