@@ -6,6 +6,7 @@ from helper import (get_model_variables,
                     process_result)
 
 from ast import literal_eval
+import re
 
 ############## DS Model ##############
 def ds_model(data_dict):
@@ -34,6 +35,11 @@ def name_match(data_dict):
     company_name = clean_value(data_dict.get('company_name', 'Empty'))
     dba = clean_value(data_dict.get('dba', 'Empty'))
     external_account_name = clean_value(data_dict.get('external_account_name', 'Empty'))
+
+    company_name = re.sub(r'\s+\bLLC\b$', '', company_name, flags=re.IGNORECASE)
+    external_account_name = [re.sub(r'\s+\bLLC\b$', '', name, flags=re.IGNORECASE).strip() for name in external_account_name]
+    # print(company_name)
+    # print(external_account_name)
 
     result = name_matching(user_name_full, user_name_mid, company_name, dba, external_account_name).get_result()
     result, decision = process_result(result)
@@ -83,26 +89,26 @@ def lambda_handler(event, context):
 
 
 if __name__ == '__main__':
-    event_dict = {"pfr_id": "ec1a475b-ede9-4d5b-8f23-834916d7c6aa"}
-    event_dict["business_id"] = 'f3c14100-8453-4381-a411-999796c96b99'
-    event_dict['amount'] = '470'
-    event_dict['external_bank_name'] = 'John'
+    event_dict = {"pfr_id": "91cfac97-c769-4776-bcfa-ef27ad016b05"}
+    event_dict["business_id"] = '55c27bc4-6e52-4b3b-9370-ddb122eb3a91'
+    event_dict['amount'] = '300'
+    event_dict['external_bank_name'] = 'Chase'
     event_dict['users'] = [
                             {
-                                "first_name": "John",
-                                "middle_name": "Bar",
-                                "last_name": "Doe",
+                                "first_name": "Danielle",
+                                "middle_name": "",
+                                "last_name": "Huppler",
                                 },
-                                {
-                                "first_name": "Jane",
-                                "middle_name": "Bar",
-                                "last_name": "Doe",
-                            }
+                            #     {
+                            #     "first_name": "Jane",
+                            #     "middle_name": "Bar",
+                            #     "last_name": "Doe",
+                            # }
                           ]
     # event_dict['user_name_mid'] = ""
-    event_dict['company_name'] = ''
+    event_dict['company_name'] = 'StayCo LLC'
     event_dict['dba'] = ''
-    event_dict['external_account_name'] = ["John Bar", "Jane Doe"]
+    event_dict['external_account_name'] = ["KIDS PLAY LLC"]
 
     event = {
         'body': json.dumps(event_dict)
