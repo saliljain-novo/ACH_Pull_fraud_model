@@ -25,11 +25,10 @@ def get_data(conn, query, params=None):
 def get_model_variables(business_id, amount, external_bank_name):
     conn = create_snowflake_connection()
 
-
     query = """
         with data1 as (
         SELECT a.*
-        FROM "PROD_DB"."DATA"."ACH_DS_ENGINE_PROD" a
+        FROM "PROD_DB"."ADHOC"."ACH_DS_ENGINE_STAGING" a
         WHERE a.business_id = %s
         QUALIFY ROW_NUMBER() OVER (PARTITION BY a.business_id ORDER BY a.run_time DESC) = 1
         )
@@ -42,7 +41,6 @@ def get_model_variables(business_id, amount, external_bank_name):
         select a.*, COALESCE(b.bank_risk,0) as bank_risk 
         from data1 a left join data2 b ON TRUE limit 1
     """
-    # "PROD_DB"."ADHOC"."ACH_DS_ENGINE_STAGING"
 
     data = get_data(conn, query, params=(business_id, external_bank_name))
 
